@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hibiscus/theme.dart';
 
 void main() {
   runApp(MyApp());
@@ -9,109 +11,184 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      title: 'Hibiscus by Cubesome',
+      themeMode: ThemeMode.system,
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => StartPage(),
+        //'/result': (context) => ResultPage(),
+      },
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+class StartPage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _StartPageState createState() => _StartPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
+class _StartPageState extends State<StartPage> {
+  bool _processingInput = false;
+  bool _textAlteration = false;
+  bool _kaomojiInsertion = false;
+  bool _commentInsertion = false;
+  double _enhancementIntensity = 1.0;
+  String _userInput;
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(
+          'Hibiscus',
+          style: TextStyle(
+            fontFamily: 'PalanquinDark',
+          ),
+        ),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+      drawer: Drawer(
+        elevation: 100,
+        child: ListView(
+          children: [
+            DrawerHeader(
+              child: Text(
+                'Settings',
+                style: TextStyle(
+                  fontFamily: 'PalanquinDark',
+                  fontSize: 30,
+                  color: Colors.white,
+                ),
+              ),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topRight,
+                  colors: [
+                    Colors.teal,
+                    Color(0xff1c86a6),
+                  ],
+                ),
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            SizedBox(
+              height: 15,
+            ),
+            ListTile(
+              title: Text(
+                'Intensity',
+                style: TextStyle(
+                  color: Theme.of(context).accentColor,
+                ),
+              ),
+              subtitle: Slider(
+                value: _enhancementIntensity,
+                onChanged: (double _sliderValueHolder) {
+                  setState(() {
+                    _enhancementIntensity = _sliderValueHolder;
+                  });
+                },
+              ),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.text_fields,
+                color: Theme.of(context).accentColor,
+              ),
+              title: Text(
+                'Text alteration',
+                style: TextStyle(
+                  color: Theme.of(context).accentColor,
+                ),
+              ),
+              trailing: Switch(
+                inactiveTrackColor: Theme.of(context).primaryColor,
+                inactiveThumbColor: Theme.of(context).hintColor,
+                value: _textAlteration,
+                onChanged: (bool _switchStateHolder) {
+                  setState(() {
+                    _textAlteration = _switchStateHolder;
+                  });
+                },
+              ),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.insert_emoticon,
+                color: Theme.of(context).accentColor,
+              ),
+              title: Text(
+                'Kaomoji insertion',
+                style: TextStyle(
+                  color: Theme.of(context).accentColor,
+                ),
+              ),
+              trailing: Switch(
+                inactiveTrackColor: Theme.of(context).primaryColor,
+                inactiveThumbColor: Theme.of(context).hintColor,
+                value: _kaomojiInsertion,
+                onChanged: (bool _switchStateHolder) {
+                  setState(() {
+                    _kaomojiInsertion = _switchStateHolder;
+                  });
+                },
+              ),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.comment,
+                color: Theme.of(context).accentColor,
+              ),
+              title: Text(
+                'Comment insertion',
+                style: TextStyle(
+                  color: Theme.of(context).accentColor,
+                ),
+              ),
+              trailing: Switch(
+                inactiveTrackColor: Theme.of(context).primaryColor,
+                inactiveThumbColor: Theme.of(context).hintColor,
+                value: _commentInsertion,
+                onChanged: (bool _switchStateHolder) {
+                  setState(() {
+                    _commentInsertion = _switchStateHolder;
+                  });
+                },
+              ),
             ),
           ],
         ),
       ),
+      body: TextField(
+        maxLines: null,
+        expands: true,
+        style: TextStyle(
+          color: Theme.of(context).accentColor,
+          fontFamily: 'Quicksand',
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.all(10),
+          hintText: 'Text to enhance...',
+        ),
+        onChanged: (String _userInputHolder) {
+          _userInput = _userInputHolder;
+        },
+      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        child: _processingInput
+            ? CircularProgressIndicator(
+                backgroundColor: Theme.of(context).primaryColor,
+              )
+            : Icon(Icons.arrow_forward),
+        onPressed: () {
+          setState(() {
+            _processingInput = true;
+          });
+        },
+      ),
     );
   }
 }
