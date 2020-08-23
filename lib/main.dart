@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => StartPage(),
-        //'/result': (context) => ResultPage(),
+        '/result': (context) => ResultPage(),
       },
     );
   }
@@ -36,6 +36,7 @@ class _StartPageState extends State<StartPage> {
   bool _commentInsertion = false;
   double _enhancementIntensity = 1.0;
   String _userInput;
+  String _processedText;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -183,11 +184,65 @@ class _StartPageState extends State<StartPage> {
                 backgroundColor: Theme.of(context).primaryColor,
               )
             : Icon(Icons.arrow_forward),
-        onPressed: () {
+        onPressed: () async {
           setState(() {
             _processingInput = true;
           });
+          await new Future.delayed(const Duration(seconds : 2)); // Simulation of text processing that takes 2 seconds.
+          //TODO: Add text processing
+          _processedText = 'Processed $_userInput';
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ResultPage(resultText: _processedText),
+            ),
+          );
+          setState(() {
+            _processingInput = false;
+          });
         },
+      ),
+    );
+  }
+}
+
+class ResultPage extends StatefulWidget {
+  final String resultText;
+  ResultPage({Key key, this.resultText}) : super(key: key);
+  @override
+  _ResultPageState createState() => _ResultPageState();
+}
+
+class _ResultPageState extends State<ResultPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Your result',
+          style: TextStyle(
+            fontFamily: 'PalanquinDark',
+          ),
+        ),
+      ),
+      body: TextField(
+        controller: TextEditingController(
+          text: widget.resultText,
+        ),
+        readOnly: true,
+        maxLines: null,
+        expands: true,
+        style: TextStyle(
+          color: Theme.of(context).accentColor,
+          fontFamily: 'Quicksand',
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.all(10),
+          hintText: 'There was no text, there are no results. :(',
+        ),
       ),
     );
   }
