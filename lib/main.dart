@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:hibiscus/theme.dart';
 
@@ -42,7 +44,7 @@ class _StartPageState extends State<StartPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Hibiscus',
+          'Owotion',
           style: TextStyle(
             fontFamily: 'PalanquinDark',
           ),
@@ -53,12 +55,16 @@ class _StartPageState extends State<StartPage> {
         child: ListView(
           children: [
             DrawerHeader(
-              child: Text(
-                'Settings',
-                style: TextStyle(
-                  fontFamily: 'PalanquinDark',
-                  fontSize: 30,
-                  color: Colors.white,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 0.0, horizontal: 15.0),
+                child: Text(
+                  'Settings',
+                  style: TextStyle(
+                    fontFamily: 'PalanquinDark',
+                    fontSize: 30,
+                    color: Colors.white,
+                  ),
                 ),
               ),
               decoration: BoxDecoration(
@@ -119,7 +125,7 @@ class _StartPageState extends State<StartPage> {
                 color: Theme.of(context).accentColor,
               ),
               title: Text(
-                'Kaomoji insertion',
+                'Kaomoji',
                 style: TextStyle(
                   color: Theme.of(context).accentColor,
                 ),
@@ -141,7 +147,7 @@ class _StartPageState extends State<StartPage> {
                 color: Theme.of(context).accentColor,
               ),
               title: Text(
-                'Comment insertion',
+                'Comments',
                 style: TextStyle(
                   color: Theme.of(context).accentColor,
                 ),
@@ -156,6 +162,65 @@ class _StartPageState extends State<StartPage> {
                   });
                 },
               ),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.info_outline,
+                color: Theme.of(context).accentColor,
+              ),
+              title: Text(
+                'About',
+                style: TextStyle(
+                  color: Theme.of(context).accentColor,
+                ),
+              ),
+              onTap: () {
+                showAboutDialog(
+                  context: context,
+                  applicationIcon: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Image(
+                      image: AssetImage('assets/images/hibiscus_icon.png'),
+                      width: 50,
+                    ),
+                  ),
+                  applicationVersion: 'Version: 1.0',
+                  applicationName: 'Owotion',
+                  applicationLegalese: 'Developed by Cubesome',
+                  children: [
+                    SizedBox(
+                      height: 30,
+                    ),
+                    RichText(
+                      text: TextSpan(children: [
+                        TextSpan(
+                          text:
+                              'This is an open-source application which provides you with a fast and and easy way of enhancing your messages, comments and other pieces of text so that you can show them how much of an otaku are you. This app does not share any of the users\'s data nor does it collect usage information. If you are not sure, if you can trust it or just want to see how it all works then feel free to look under the hood by checking out our ',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'repository on Github',
+                          style: TextStyle(
+                            color: Colors.blue,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              launch('https://github.com/cubesome/hibiscus');
+                            },
+                        ),
+                        TextSpan(
+                          text: '.',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ]),
+                    ),
+                  ],
+                );
+              },
             ),
           ],
         ),
@@ -188,7 +253,9 @@ class _StartPageState extends State<StartPage> {
           setState(() {
             _processingInput = true;
           });
-          await new Future.delayed(const Duration(seconds : 2)); // Simulation of text processing that takes 2 seconds.
+          await new Future.delayed(
+            const Duration(seconds: 2),
+          ); // Simulation of text processing that takes 2 seconds.
           //TODO: Add text processing
           _processedText = 'Processed $_userInput';
           Navigator.push(
