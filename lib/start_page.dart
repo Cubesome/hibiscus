@@ -11,10 +11,12 @@ class StartPage extends StatefulWidget {
 
 class _StartPageState extends State<StartPage> {
   bool _processingInput = false;
-  bool _textAlteration = false;
-  bool _kaomojiInsertion = false;
-  bool _commentsInsertion = false;
-  double _enhancementIntensity = 0.5;
+  bool _textAlteration = true;
+  bool _kaomojiInsertion = true;
+  bool _commentsInsertion = true;
+  double _textEnhancementIntensity = 1.0;
+  double _kaomojiIntensity = 0.5;
+  double _commentsIntensity = 0.5;
   String _userInput;
   String _processedText;
   @override
@@ -56,89 +58,133 @@ class _StartPageState extends State<StartPage> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 15,
-            ),
-            ListTile(
-              title: Text(
-                'Intensity',
-                style: TextStyle(
-                  color: Theme.of(context).accentColor,
-                ),
-              ),
-              subtitle: Slider(
-                value: _enhancementIntensity,
-                onChanged: (double _sliderValueHolder) {
-                  setState(() {
-                    _enhancementIntensity = _sliderValueHolder;
-                  });
-                },
-              ),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.text_fields,
-                color: Theme.of(context).accentColor,
-              ),
-              title: Text(
-                'Text alteration',
-                style: TextStyle(
-                  color: Theme.of(context).accentColor,
-                ),
-              ),
-              trailing: Switch(
-                inactiveTrackColor: Theme.of(context).primaryColor,
-                inactiveThumbColor: Theme.of(context).hintColor,
-                value: _textAlteration,
-                onChanged: (bool _switchStateHolder) {
-                  setState(() {
-                    _textAlteration = _switchStateHolder;
-                  });
-                },
-              ),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.insert_emoticon,
-                color: Theme.of(context).accentColor,
-              ),
-              title: Text(
-                'Kaomoji',
-                style: TextStyle(
-                  color: Theme.of(context).accentColor,
-                ),
-              ),
-              trailing: Switch(
-                inactiveTrackColor: Theme.of(context).primaryColor,
-                inactiveThumbColor: Theme.of(context).hintColor,
-                value: _kaomojiInsertion,
-                onChanged: (bool _switchStateHolder) {
-                  setState(() {
-                    _kaomojiInsertion = _switchStateHolder;
-                  });
-                },
+            Card(
+              color: Theme.of(context).primaryColor,
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: Icon(
+                      Icons.text_fields,
+                      color: Theme.of(context).accentColor,
+                    ),
+                    title: Text(
+                      'Text alteration',
+                      style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                      ),
+                    ),
+                    trailing: Switch(
+                      inactiveTrackColor: Colors.grey.shade400,
+                      inactiveThumbColor: Colors.grey.shade700,
+                      value: _textAlteration,
+                      onChanged: (bool _switchStateHolder) {
+                        setState(() {
+                          _textAlteration = _switchStateHolder;
+                        });
+                      },
+                    ),
+                  ),
+                  Visibility(
+                    visible: _textAlteration,
+                    child: Slider(
+                      value: _textEnhancementIntensity,
+                      onChanged: (double _sliderValueHolder) {
+                        setState(() {
+                          _textEnhancementIntensity = _sliderValueHolder;
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5.0,
+                  )
+                ],
               ),
             ),
-            ListTile(
-              leading: Icon(
-                Icons.comment,
-                color: Theme.of(context).accentColor,
+            Card(
+              color: Theme.of(context).primaryColor,
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: Icon(
+                      Icons.insert_emoticon,
+                      color: Theme.of(context).accentColor,
+                    ),
+                    title: Text(
+                      'Kaomoji',
+                      style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                      ),
+                    ),
+                    trailing: Switch(
+                      inactiveTrackColor: Colors.grey.shade400,
+                      inactiveThumbColor: Colors.grey.shade700,
+                      value: _kaomojiInsertion,
+                      onChanged: (bool _switchStateHolder) {
+                        setState(() {
+                          _kaomojiInsertion = _switchStateHolder;
+                        });
+                      },
+                    ),
+                  ),
+                  Visibility(
+                    visible: _kaomojiInsertion,
+                    child: Slider(
+                      value: _kaomojiIntensity,
+                      onChanged: (double _sliderValueHolder) {
+                        setState(() {
+                          _kaomojiIntensity = _sliderValueHolder;
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5.0,
+                  )
+                ],
               ),
-              title: Text(
-                'Comments',
-                style: TextStyle(
-                  color: Theme.of(context).accentColor,
-                ),
-              ),
-              trailing: Switch(
-                inactiveTrackColor: Theme.of(context).primaryColor,
-                inactiveThumbColor: Theme.of(context).hintColor,
-                value: _commentsInsertion,
-                onChanged: (bool _switchStateHolder) {
-                  setState(() {
-                    _commentsInsertion = _switchStateHolder;
-                  });
-                },
+            ),
+            Card(
+              color: Theme.of(context).primaryColor,
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: Icon(
+                      Icons.comment,
+                      color: Theme.of(context).accentColor,
+                    ),
+                    title: Text(
+                      'Comments',
+                      style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                      ),
+                    ),
+                    trailing: Switch(
+                      inactiveTrackColor: Colors.grey.shade400,
+                      inactiveThumbColor: Colors.grey.shade700,
+                      value: _commentsInsertion,
+                      onChanged: (bool _switchStateHolder) {
+                        setState(() {
+                          _commentsInsertion = _switchStateHolder;
+                        });
+                      },
+                    ),
+                  ),
+                  Visibility(
+                    visible: _commentsInsertion,
+                    child: Slider(
+                      value: _commentsIntensity,
+                      onChanged: (double _sliderValueHolder) {
+                        setState(() {
+                          _commentsIntensity = _sliderValueHolder;
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5.0,
+                  )
+                ],
               ),
             ),
             ListTile(
@@ -233,7 +279,9 @@ class _StartPageState extends State<StartPage> {
           });
           _processedText = await hibiscusEngine(
             textToProcess: _userInput,
-            enhancementIntensity: _enhancementIntensity,
+            textEnhancementIntensity: _textEnhancementIntensity,
+            kaomojiIntensity: _kaomojiIntensity,
+            commentsIntensity: _commentsIntensity,
             textAlteration: _textAlteration,
             kaomojiInsertion: _kaomojiInsertion,
             commentsInsertion: _commentsInsertion,
