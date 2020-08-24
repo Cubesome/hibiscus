@@ -1,24 +1,16 @@
 class Translation {
-  Map _Translations = {
+  Map _translations = {
     'ro':'wo',
     'ra':'wa',
     'le':'we',
     'ji':'wi',
-    'er':'ew'
+    'er':'ew',
+    'ri':'wi',
   };
 
-// Previous efforts on adjustable enhancement process
-//  String Translate(String textToTranslate) {
-//    if(_Translations.containsKey(textToTranslate)) {
-//      return _Translations[textToTranslate];
-//    } else {
-//      return textToTranslate;
-//    }
-//  }
-
-  Future<String> Translate(String translationText) async {
-    await _Translations.forEach((key, value) {
-      translationText.replaceAll(key, value);
+  Future<String> translate(String translationText) async {
+    _translations.forEach((key, value) {
+      translationText = translationText.replaceAll(key, value);
     });
     return translationText;
   }

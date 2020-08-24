@@ -10,11 +10,11 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
+  String _appVersion = '0.1 beta';
   bool _processingInput = false;
   bool _textAlteration = true;
   bool _kaomojiInsertion = true;
   bool _commentsInsertion = true;
-  double _textEnhancementIntensity = 1.0;
   double _kaomojiIntensity = 0.5;
   double _commentsIntensity = 0.5;
   String _userInput;
@@ -80,17 +80,6 @@ class _StartPageState extends State<StartPage> {
                       onChanged: (bool _switchStateHolder) {
                         setState(() {
                           _textAlteration = _switchStateHolder;
-                        });
-                      },
-                    ),
-                  ),
-                  Visibility(
-                    visible: _textAlteration,
-                    child: Slider(
-                      value: _textEnhancementIntensity,
-                      onChanged: (double _sliderValueHolder) {
-                        setState(() {
-                          _textEnhancementIntensity = _sliderValueHolder;
                         });
                       },
                     ),
@@ -187,6 +176,9 @@ class _StartPageState extends State<StartPage> {
                 ],
               ),
             ),
+            SizedBox(
+              height: 10,
+            ),
             ListTile(
               leading: Icon(
                 Icons.info_outline,
@@ -208,7 +200,7 @@ class _StartPageState extends State<StartPage> {
                       width: 50,
                     ),
                   ),
-                  applicationVersion: 'Version: 1.0',
+                  applicationVersion: 'Version: $_appVersion',
                   applicationName: 'Owotion',
                   applicationLegalese: 'Developed by Cubesome',
                   children: [
@@ -246,6 +238,48 @@ class _StartPageState extends State<StartPage> {
                 );
               },
             ),
+            ListTile(
+              leading: Icon(
+                Icons.gavel,
+                color: Theme.of(context).accentColor,
+              ),
+              title: Text(
+                'Licenses',
+                style: TextStyle(
+                  color: Theme.of(context).accentColor,
+                ),
+              ),
+              onTap: () {
+                showLicensePage(
+                  context: context,
+                  applicationIcon: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Image(
+                      image: AssetImage('assets/images/hibiscus_icon.png'),
+                      width: 50,
+                    ),
+                  ),
+                  applicationVersion: 'Version: $_appVersion',
+                  applicationName: 'Owotion',
+                  applicationLegalese: 'Developed by Cubesome',
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.code,
+                color: Theme.of(context).accentColor,
+              ),
+              title: Text(
+                'Source code',
+                style: TextStyle(
+                  color: Theme.of(context).accentColor,
+                ),
+              ),
+              onTap: () {
+                launch('https://github.com/cubesome/hibiscus');
+              },
+            ),
           ],
         ),
       ),
@@ -279,7 +313,6 @@ class _StartPageState extends State<StartPage> {
           });
           _processedText = await hibiscusEngine(
             textToProcess: _userInput,
-            textEnhancementIntensity: _textEnhancementIntensity,
             kaomojiIntensity: _kaomojiIntensity,
             commentsIntensity: _commentsIntensity,
             textAlteration: _textAlteration,
