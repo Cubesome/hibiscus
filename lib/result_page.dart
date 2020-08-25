@@ -13,7 +13,7 @@ class _ResultPageState extends State<ResultPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Your result',
+          'Owotionized version',
           style: TextStyle(
             fontFamily: 'PalanquinDark',
           ),

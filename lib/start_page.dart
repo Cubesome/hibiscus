@@ -14,6 +14,7 @@ class _StartPageState extends State<StartPage> {
   bool _processingInput = false;
   bool _textAlteration = true;
   bool _kaomojiInsertion = true;
+  bool _kaomojiOnlyAfterSentences = false;
   bool _commentsInsertion = true;
   double _kaomojiIntensity = 0.5;
   double _commentsIntensity = 0.5;
@@ -114,6 +115,28 @@ class _StartPageState extends State<StartPage> {
                           _kaomojiInsertion = _switchStateHolder;
                         });
                       },
+                    ),
+                  ),
+                  Visibility(
+                    visible: _kaomojiInsertion,
+                    child: ListTile(
+                      title: Text(
+                        'Only after sentences',
+                        style: TextStyle(
+                          color: Theme.of(context).accentColor,
+                        ),
+                      ),
+                      trailing: Switch(
+                        inactiveTrackColor: Colors.grey.shade400,
+                        inactiveThumbColor: Colors.grey.shade700,
+                        value: _kaomojiOnlyAfterSentences,
+                        onChanged: (_kaomojiOnlyAfterSentencesValueHolder) {
+                          setState(() {
+                            _kaomojiOnlyAfterSentences =
+                                _kaomojiOnlyAfterSentencesValueHolder;
+                          });
+                        },
+                      ),
                     ),
                   ),
                   Visibility(
@@ -311,14 +334,17 @@ class _StartPageState extends State<StartPage> {
           setState(() {
             _processingInput = true;
           });
-          _processedText = await hibiscusEngine(
-            textToProcess: _userInput,
-            kaomojiIntensity: _kaomojiIntensity,
-            commentsIntensity: _commentsIntensity,
-            textAlteration: _textAlteration,
-            kaomojiInsertion: _kaomojiInsertion,
-            commentsInsertion: _commentsInsertion,
-          );
+          if (_userInput != null) {
+            _processedText = await hibiscusEngine(
+              textToProcess: _userInput,
+              kaomojiIntensity: _kaomojiIntensity,
+              commentsIntensity: _commentsIntensity,
+              textAlteration: _textAlteration,
+              kaomojiInsertion: _kaomojiInsertion,
+              kaomojiOnlyAfterSentences: _kaomojiOnlyAfterSentences,
+              commentsInsertion: _commentsInsertion,
+            );
+          }
           Navigator.push(
             context,
             MaterialPageRoute(
