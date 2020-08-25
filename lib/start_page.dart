@@ -16,8 +16,8 @@ class _StartPageState extends State<StartPage> {
   bool _kaomojiInsertion = true;
   bool _kaomojiOnlyAfterSentences = false;
   bool _commentsInsertion = true;
-  double _kaomojiIntensity = 0.5;
-  double _commentsIntensity = 0.5;
+  double _kaomojiIntensity = 0.1;
+  double _commentsIntensity = 0.2;
   String _userInput;
   String _processedText;
   @override
@@ -307,55 +307,76 @@ class _StartPageState extends State<StartPage> {
           ],
         ),
       ),
-      body: TextField(
-        maxLines: null,
-        expands: true,
-        style: TextStyle(
-          color: Theme.of(context).accentColor,
-          fontFamily: 'Quicksand',
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
+      body: SafeArea(
+        child: TextField(
+          maxLines: null,
+          expands: true,
+          style: TextStyle(
+            color: Theme.of(context).accentColor,
+            fontFamily: 'Quicksand',
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.all(10),
+            hintText: 'Text to enhance...',
+          ),
+          onChanged: (String _userInputHolder) {
+            _userInput = _userInputHolder;
+          },
         ),
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.all(10),
-          hintText: 'Text to enhance...',
-        ),
-        onChanged: (String _userInputHolder) {
-          _userInput = _userInputHolder;
-        },
       ),
-      floatingActionButton: FloatingActionButton(
-        child: _processingInput
-            ? CircularProgressIndicator(
-                backgroundColor: Theme.of(context).primaryColor,
-              )
-            : Icon(Icons.arrow_forward),
-        onPressed: () async {
-          setState(() {
-            _processingInput = true;
-          });
-          if (_userInput != null) {
-            _processedText = await hibiscusEngine(
-              textToProcess: _userInput,
-              kaomojiIntensity: _kaomojiIntensity,
-              commentsIntensity: _commentsIntensity,
-              textAlteration: _textAlteration,
-              kaomojiInsertion: _kaomojiInsertion,
-              kaomojiOnlyAfterSentences: _kaomojiOnlyAfterSentences,
-              commentsInsertion: _commentsInsertion,
-            );
-          }
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ResultPage(resultText: _processedText),
-            ),
+      floatingActionButton: Builder(
+        builder: (BuildContext context) {
+          return FloatingActionButton(
+            child: _processingInput
+                ? CircularProgressIndicator(
+                    backgroundColor: Theme.of(context).primaryColor,
+                  )
+                : Icon(Icons.arrow_forward),
+            onPressed: () async {
+              setState(() {
+                _processingInput = true;
+              });
+              Scaffold.of(context).removeCurrentSnackBar();
+              if (_userInput != null) {
+                if (_userInput.length > 0) {
+                  _processedText = await hibiscusEngine(
+                    textToProcess: _userInput,
+                    kaomojiIntensity: _kaomojiIntensity,
+                    commentsIntensity: _commentsIntensity,
+                    textAlteration: _textAlteration,
+                    kaomojiInsertion: _kaomojiInsertion,
+                    kaomojiOnlyAfterSentences: _kaomojiOnlyAfterSentences,
+                    commentsInsertion: _commentsInsertion,
+                  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ResultPage(resultText: _processedText),
+                    ),
+                  );
+                } else {
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Please enter some text to process and try again.'),
+                    ),
+                  );
+                }
+              } else {
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Please enter some text to process and try again.'),
+                  ),
+                );
+              }
+              setState(() {
+                _processingInput = false;
+              });
+            },
           );
-          setState(() {
-            _processingInput = false;
-          });
-        },
+        }
       ),
     );
   }

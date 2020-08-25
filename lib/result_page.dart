@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
 
 class ResultPage extends StatefulWidget {
   final String resultText;
@@ -13,11 +15,19 @@ class _ResultPageState extends State<ResultPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Owotionized version',
+          'Owotionized',
           style: TextStyle(
             fontFamily: 'PalanquinDark',
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.share),
+            onPressed: () {
+              Share.share(widget.resultText);
+            },
+          ),
+        ],
       ),
       body: TextField(
         controller: TextEditingController(

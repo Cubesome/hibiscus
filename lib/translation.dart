@@ -75,7 +75,6 @@ class Kaomoji {
     String randomKaomoji;
     String textToReplace;
     int currentPosition = 0;
-    emotionText += ' ';
 
     if(kaomojiOnlyAfterSentences) {
       textToReplace = '. ';
