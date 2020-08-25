@@ -121,7 +121,7 @@ class _StartPageState extends State<StartPage> {
                     visible: _kaomojiInsertion,
                     child: ListTile(
                       title: Text(
-                        'Only after sentences',
+                        'Insert only after sentences',
                         style: TextStyle(
                           color: Theme.of(context).accentColor,
                         ),
@@ -156,49 +156,50 @@ class _StartPageState extends State<StartPage> {
                 ],
               ),
             ),
-            Card(
-              color: Theme.of(context).primaryColor,
-              child: Column(
-                children: [
-                  ListTile(
-                    leading: Icon(
-                      Icons.comment,
-                      color: Theme.of(context).accentColor,
-                    ),
-                    title: Text(
-                      'Comments',
-                      style: TextStyle(
-                        color: Theme.of(context).accentColor,
-                      ),
-                    ),
-                    trailing: Switch(
-                      inactiveTrackColor: Colors.grey.shade400,
-                      inactiveThumbColor: Colors.grey.shade700,
-                      value: _commentsInsertion,
-                      onChanged: (bool _switchStateHolder) {
-                        setState(() {
-                          _commentsInsertion = _switchStateHolder;
-                        });
-                      },
-                    ),
-                  ),
-                  Visibility(
-                    visible: _commentsInsertion,
-                    child: Slider(
-                      value: _commentsIntensity,
-                      onChanged: (double _sliderValueHolder) {
-                        setState(() {
-                          _commentsIntensity = _sliderValueHolder;
-                        });
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5.0,
-                  )
-                ],
-              ),
-            ),
+            // TODO: Uncomment this part after completing comment insertion part of the Hibiscus Engine
+            // Card(
+            //   color: Theme.of(context).primaryColor,
+            //   child: Column(
+            //     children: [
+            //       ListTile(
+            //         leading: Icon(
+            //           Icons.comment,
+            //           color: Theme.of(context).accentColor,
+            //         ),
+            //         title: Text(
+            //           'Comments',
+            //           style: TextStyle(
+            //             color: Theme.of(context).accentColor,
+            //           ),
+            //         ),
+            //         trailing: Switch(
+            //           inactiveTrackColor: Colors.grey.shade400,
+            //           inactiveThumbColor: Colors.grey.shade700,
+            //           value: _commentsInsertion,
+            //           onChanged: (bool _switchStateHolder) {
+            //             setState(() {
+            //               _commentsInsertion = _switchStateHolder;
+            //             });
+            //           },
+            //         ),
+            //       ),
+            //       Visibility(
+            //         visible: _commentsInsertion,
+            //         child: Slider(
+            //           value: _commentsIntensity,
+            //           onChanged: (double _sliderValueHolder) {
+            //             setState(() {
+            //               _commentsIntensity = _sliderValueHolder;
+            //             });
+            //           },
+            //         ),
+            //       ),
+            //       SizedBox(
+            //         height: 5.0,
+            //       )
+            //     ],
+            //   ),
+            // ),
             SizedBox(
               height: 10,
             ),

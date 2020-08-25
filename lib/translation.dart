@@ -73,39 +73,34 @@ class Kaomoji {
   Future<String> kaomojiAdder(String emotionText, double kaomojiIntensity, bool kaomojiOnlyAfterSentences) async {
     Random _randomNumberGenerator = Random();
     String randomKaomoji;
+    String textToReplace;
     int currentPosition = 0;
     emotionText += ' ';
-    if(kaomojiOnlyAfterSentences && emotionText.contains(' ')) {
-      currentPosition = emotionText.indexOf('. ', currentPosition + 1);
-      while(emotionText.substring(currentPosition + 1).contains('. ')) {
-        randomKaomoji = _kaomoji[_randomNumberGenerator.nextInt(_kaomoji.length)];
-        if(_randomNumberGenerator.nextDouble() + kaomojiIntensity > 1) {
-          emotionText = emotionText.replaceFirst('. ', '. ${randomKaomoji} ', currentPosition);
-          currentPosition = emotionText.indexOf('. ', currentPosition + randomKaomoji.length + 2);
-        } else {
-          currentPosition = emotionText.indexOf('. ', currentPosition + 1);
-        }
-      }
-      randomKaomoji = _kaomoji[_randomNumberGenerator.nextInt(_kaomoji.length)];
-      if(_randomNumberGenerator.nextDouble() + kaomojiIntensity > 1) {
-        emotionText += ' ${randomKaomoji}';
-      }
+
+    if(kaomojiOnlyAfterSentences) {
+      textToReplace = '. ';
     } else {
-      currentPosition = emotionText.indexOf(' ', currentPosition + 1);
-      while(emotionText.substring(currentPosition + 1).contains(' ')) {
+      textToReplace = ' ';
+    }
+
+    if(emotionText.contains(' ')) {
+      currentPosition = emotionText.indexOf(textToReplace, currentPosition + 1);
+      while(emotionText.substring(currentPosition + 1).contains(textToReplace)) {
         randomKaomoji = _kaomoji[_randomNumberGenerator.nextInt(_kaomoji.length)];
         if(_randomNumberGenerator.nextDouble() + kaomojiIntensity > 1) {
-          emotionText = emotionText.replaceFirst(' ', ' ${randomKaomoji} ', currentPosition);
-          currentPosition = emotionText.indexOf(' ', currentPosition + randomKaomoji.length + 2);
+          emotionText = emotionText.replaceFirst(textToReplace, textToReplace + '$randomKaomoji ', currentPosition);
+          currentPosition = emotionText.indexOf(textToReplace, currentPosition + randomKaomoji.length + 2);
         } else {
-          currentPosition = emotionText.indexOf(' ', currentPosition + 1);
+          currentPosition = emotionText.indexOf(textToReplace, currentPosition + 1);
         }
       }
       randomKaomoji = _kaomoji[_randomNumberGenerator.nextInt(_kaomoji.length)];
-      if(_randomNumberGenerator.nextDouble() + kaomojiIntensity > 1) {
-        emotionText += ' ${randomKaomoji}';
-      }
     }
+
+    if(_randomNumberGenerator.nextDouble() + kaomojiIntensity > 1) {
+      emotionText += ' $randomKaomoji';
+    }
+
     return emotionText;
   }
 }
