@@ -10,7 +10,7 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
-  String _appVersion = '0.1 beta';
+  String _appVersion = '1.0.0';
   bool _processingInput = false;
   bool _textAlteration = true;
   bool _kaomojiInsertion = true;
@@ -235,13 +235,13 @@ class _StartPageState extends State<StartPage> {
                       text: TextSpan(children: [
                         TextSpan(
                           text:
-                              'This is an open-source application which provides you with a fast and and easy way of enhancing your messages, comments and other pieces of text so that you can show them how much of an otaku are you. This app does not share any of the users\'s data nor does it collect usage information. If you are not sure, if you can trust it or just want to see how it all works then feel free to look under the hood by checking out our ',
+                              'This simple app provides you with the amazing functionality that you didn\'t even know you needed. If you want to know how it works, feel free to look under the hood by checking out our ',
                           style: TextStyle(
                             color: Colors.black,
                           ),
                         ),
                         TextSpan(
-                          text: 'repository on Github',
+                          text: 'repository',
                           style: TextStyle(
                             color: Colors.blue,
                           ),
