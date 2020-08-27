@@ -92,13 +92,13 @@ class Kaomoji {
       }
     }
 
-    if(_randomNumberGenerator.nextDouble() + kaomojiIntensity > 1 && kaomojiOnlyAfterSentences == false) {
+    if(_randomNumberGenerator.nextDouble() + kaomojiIntensity > 1 && kaomojiOnlyAfterSentences == false && emotionText.startsWith(' ') == false) {
       randomKaomoji = _kaomoji[_randomNumberGenerator.nextInt(_kaomoji.length)];
       emotionText = '$randomKaomoji $emotionText';
     }
 
     // This code is a better implementation of the commented version above it.
-    if(_randomNumberGenerator.nextDouble() + kaomojiIntensity > 1 && emotionText.endsWith('.')) {
+    if((_randomNumberGenerator.nextDouble() + kaomojiIntensity > 1 && emotionText.endsWith('.') == true) || (kaomojiOnlyAfterSentences == false && emotionText.endsWith(' ') == false)) {
       randomKaomoji = _kaomoji[_randomNumberGenerator.nextInt(_kaomoji.length)];
       emotionText += ' $randomKaomoji';
     }
