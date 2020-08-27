@@ -1,16 +1,16 @@
-# hibiscus
+# Owotion
 
-Text enhancer.
+## About
+The mobile app that can change any text you want into a piece of art in mere seconds!
 
-## Getting Started
+## How does it work?
+The app simply changes letters 'R' and 'L' into 'W' so that the resulting string of characters is objectively better. By doing so it makes your writings superior. You don't believe it? Just try it! Enhance your essay (yes, the one that's due tomorrow), or make your résumé better when applying for your dream job. It's easy like that, and by automatically adding some cute kaomoji your texts will truly shine.
 
-This project is a starting point for a Flutter application.
+## Features
+- letter replacement
+- adjustable kaomoji addition
+- quick sharing
+- lots of fun!
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Notice
+Please keep in mind, that this project is still in beta, therefore some aspects of the app may not be working flawlessly. If you notice any issues, please submit an issue here: https://github.com/cubesome/hibiscus/issues.
