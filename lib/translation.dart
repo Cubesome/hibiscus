@@ -25,12 +25,6 @@ class Kaomoji {
     '(* ^ ω ^)',
     '(´ ∀ ` *)',
     '٩(◕‿◕｡)۶',
-    '☆*:.｡.o(≧▽≦)o.｡.:*☆',
-    '(o^▽^o)',
-    '(⌒▽⌒)☆',
-    '<(￣︶￣)>',
-    'ヽ(・∀・)ﾉ',
-    '(´｡• ω •｡`)',
     '(￣ω￣)',
     '(o･ω･o)',
     '(＠＾◡＾)',
@@ -39,15 +33,25 @@ class Kaomoji {
     '(^人^)',
     '(o´▽`o)',
     '(*´▽`*)',
-    '｡ﾟ( ﾟ^∀^ﾟ)ﾟ｡',
-    '( ´ ω ` )',
-    '(((o(*°▽°*)o)))',
+    '(☆▽☆)',
+    '(⌒‿⌒)',
+    '＼(≧▽≦)／',
+    'ヽ(o＾▽＾o)ノ',
+    '(*°▽°*)',
+    '٩(｡•́‿•̀｡)۶',
+    '(o^▽^o)',
+    '(⌒▽⌒)☆',
+    '<(￣︶￣)>',
+    'ヽ(・∀・)ﾉ',
+    '(✧ω✧)',
+    'ヽ(*⌒▽⌒*)ﾉ',
     '(≧◡≦)',
     '(o´∀`o)',
     '(´• ω •`)',
     '(＾▽＾)',
     '(⌒ω⌒)',
     '∑d(°∀°d)',
+    'ヽ(>∀<☆)ノ',
     '╰(▔∀▔)╯',
     '(─‿‿─)',
     '(*^‿^*)',
@@ -55,19 +59,9 @@ class Kaomoji {
     '(✯◡✯)',
     '(◕‿◕)',
     '(*≧ω≦*)',
-    '(☆▽☆)',
-    '(⌒‿⌒)',
-    '＼(≧▽≦)／',
-    'ヽ(o＾▽＾o)ノ',
-    '(*°▽°*)',
-    '٩(｡•́‿•̀｡)۶',
-    '(✧ω✧)',
-    'ヽ(*⌒▽⌒*)ﾉ',
-    '(´｡• ᵕ •｡`)',
     '( ´ ▽ ` )',
     '(￣▽￣)',
     '╰(*´︶`*)╯',
-    'ヽ(>∀<☆)ノ',
   ];
 
   Future<String> kaomojiAdder(String emotionText, double kaomojiIntensity, bool kaomojiOnlyAfterSentences) async {
@@ -82,21 +76,30 @@ class Kaomoji {
       textToReplace = ' ';
     }
 
-    if(emotionText.contains(' ')) {
-      currentPosition = emotionText.indexOf(textToReplace, currentPosition + 1);
-      while(emotionText.substring(currentPosition + 1).contains(textToReplace)) {
-        randomKaomoji = _kaomoji[_randomNumberGenerator.nextInt(_kaomoji.length)];
+    if(emotionText.contains(textToReplace)) {
+      //currentPosition = emotionText.indexOf(textToReplace, currentPosition);
+      while(currentPosition != -1) {
+        currentPosition = emotionText.indexOf(textToReplace, currentPosition);
         if(_randomNumberGenerator.nextDouble() + kaomojiIntensity > 1) {
+          randomKaomoji = _kaomoji[_randomNumberGenerator.nextInt(_kaomoji.length)];
           emotionText = emotionText.replaceFirst(textToReplace, textToReplace + '$randomKaomoji ', currentPosition);
-          currentPosition = emotionText.indexOf(textToReplace, currentPosition + randomKaomoji.length + 2);
+          //currentPosition += randomKaomoji.length + textToReplace.length + 1;
+          //currentPosition = emotionText.indexOf(textToReplace, currentPosition);
+          currentPosition = emotionText.indexOf(textToReplace, currentPosition + randomKaomoji.length + textToReplace.length + 1);
         } else {
-          currentPosition = emotionText.indexOf(textToReplace, currentPosition + 1);
+          currentPosition = emotionText.indexOf(textToReplace, currentPosition + textToReplace.length);
         }
       }
-      randomKaomoji = _kaomoji[_randomNumberGenerator.nextInt(_kaomoji.length)];
     }
 
-    if(_randomNumberGenerator.nextDouble() + kaomojiIntensity > 1) {
+    if(_randomNumberGenerator.nextDouble() + kaomojiIntensity > 1 && kaomojiOnlyAfterSentences == false) {
+      randomKaomoji = _kaomoji[_randomNumberGenerator.nextInt(_kaomoji.length)];
+      emotionText = '$randomKaomoji $emotionText';
+    }
+
+    // This code is a better implementation of the commented version above it.
+    if(_randomNumberGenerator.nextDouble() + kaomojiIntensity > 1 && emotionText.endsWith('.')) {
+      randomKaomoji = _kaomoji[_randomNumberGenerator.nextInt(_kaomoji.length)];
       emotionText += ' $randomKaomoji';
     }
 
