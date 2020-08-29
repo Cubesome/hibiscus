@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:share/share.dart';
+import 'package:clipboard/clipboard.dart';
 
 class ResultPage extends StatefulWidget {
   final String resultText;
@@ -21,12 +23,30 @@ class _ResultPageState extends State<ResultPage> {
           ),
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.share),
-            onPressed: () {
-              Share.share(widget.resultText);
-            },
-          ),
+          kIsWeb
+              ? Builder(
+                  builder: (context) {
+                    return IconButton(
+                      icon: Icon(Icons.content_copy),
+                      onPressed: () {
+                        FlutterClipboard.copy(widget.resultText);
+                        Scaffold.of(context).hideCurrentSnackBar();
+                        Scaffold.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                                'Your results has been copied to clipboard!'),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                )
+              : IconButton(
+                  icon: Icon(Icons.share),
+                  onPressed: () {
+                    Share.share(widget.resultText);
+                  },
+                ),
         ],
       ),
       body: TextField(
@@ -45,7 +65,7 @@ class _ResultPageState extends State<ResultPage> {
         decoration: InputDecoration(
           border: InputBorder.none,
           contentPadding: EdgeInsets.all(10),
-          hintText: 'There was no text, there are no results. :(',
+          hintText: 'An error has occurred or the input was empty.',
         ),
       ),
     );
