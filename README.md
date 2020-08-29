@@ -1,5 +1,8 @@
 # Owotion
 
+## Mobile and web versions
+You can try Owotion instantly through your browser by visiting https://owotion.cubesome.com/, or download it as an app to use it on the go (even offline) here: https://github.com/cubesome/hibiscus/releases.
+
 ## About
 The mobile app that can change any text you want into a piece of art in mere seconds!
 
