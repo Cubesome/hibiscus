@@ -1,11 +1,11 @@
 {
-    "name": "hibiscus",
-    "short_name": "hibiscus",
+    "name": "Owotion by Cubesome",
+    "short_name": "Owotion",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "Text enhancer.",
+    "description": "Owotion translates your texts into owo language instantly and effortlessly. What are you waiting for? Give it a try!",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
