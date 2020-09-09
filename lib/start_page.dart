@@ -19,7 +19,6 @@ class _StartPageState extends State<StartPage> {
   double _kaomojiIntensity = 0.1;
   double _commentsIntensity = 0.2;
   String _userInput;
-  String _processedText;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -327,57 +326,58 @@ class _StartPageState extends State<StartPage> {
           },
         ),
       ),
-      floatingActionButton: Builder(
-        builder: (BuildContext context) {
-          return FloatingActionButton(
-            child: _processingInput
-                ? CircularProgressIndicator(
-                    backgroundColor: Theme.of(context).primaryColor,
-                  )
-                : Icon(Icons.arrow_forward),
-            onPressed: () async {
-              setState(() {
-                _processingInput = true;
-              });
-              Scaffold.of(context).removeCurrentSnackBar();
-              if (_userInput != null) {
-                if (_userInput.length > 0) {
-                  _processedText = await hibiscusEngine(
-                    textToProcess: _userInput,
-                    kaomojiIntensity: _kaomojiIntensity,
-                    commentsIntensity: _commentsIntensity,
-                    textAlteration: _textAlteration,
-                    kaomojiInsertion: _kaomojiInsertion,
-                    kaomojiOnlyAfterSentences: _kaomojiOnlyAfterSentences,
-                    commentsInsertion: _commentsInsertion,
-                  );
+      floatingActionButton: Builder(builder: (BuildContext context) {
+        return FloatingActionButton(
+          child: _processingInput
+              ? CircularProgressIndicator(
+                  backgroundColor: Theme.of(context).primaryColor,
+                )
+              : Icon(Icons.arrow_forward),
+          onPressed: () {
+            setState(() {
+              _processingInput = true;
+            });
+            Scaffold.of(context).removeCurrentSnackBar();
+            if (_userInput != null) {
+              if (_userInput.length > 0) {
+                hibiscusEngine(
+                  textToProcess: _userInput,
+                  kaomojiIntensity: _kaomojiIntensity,
+                  commentsIntensity: _commentsIntensity,
+                  textAlteration: _textAlteration,
+                  kaomojiInsertion: _kaomojiInsertion,
+                  kaomojiOnlyAfterSentences: _kaomojiOnlyAfterSentences,
+                  commentsInsertion: _commentsInsertion,
+                ).then((_outputText) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ResultPage(resultText: _processedText),
+                      builder: (context) => ResultPage(resultText: _outputText),
                     ),
                   );
-                } else {
-                  Scaffold.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Please enter some text to process and try again.'),
-                    ),
-                  );
-                }
+                });
               } else {
                 Scaffold.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Please enter some text to process and try again.'),
+                    content: Text(
+                        'Please enter some text to process and try again.'),
                   ),
                 );
               }
-              setState(() {
-                _processingInput = false;
-              });
-            },
-          );
-        }
-      ),
+            } else {
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  content:
+                      Text('Please enter some text to process and try again.'),
+                ),
+              );
+            }
+            setState(() {
+              _processingInput = false;
+            });
+          },
+        );
+      }),
     );
   }
 }
