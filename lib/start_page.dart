@@ -355,6 +355,9 @@ class _StartPageState extends State<StartPage> {
                       builder: (context) => ResultPage(resultText: _outputText),
                     ),
                   );
+                  setState(() {
+                    _processingInput = false;
+                  });
                 });
               } else {
                 Scaffold.of(context).showSnackBar(
@@ -363,6 +366,9 @@ class _StartPageState extends State<StartPage> {
                         'Please enter some text to process and try again.'),
                   ),
                 );
+                setState(() {
+                  _processingInput = false;
+                });
               }
             } else {
               Scaffold.of(context).showSnackBar(
@@ -371,10 +377,10 @@ class _StartPageState extends State<StartPage> {
                       Text('Please enter some text to process and try again.'),
                 ),
               );
+              setState(() {
+                _processingInput = false;
+              });
             }
-            setState(() {
-              _processingInput = false;
-            });
           },
         );
       }),
