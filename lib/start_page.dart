@@ -52,7 +52,7 @@ class _StartPageState extends State<StartPage> {
             }
           ),
           IconButton(
-            icon: Icon(Icons.delete_sweep),
+            icon: Icon(Icons.delete_forever),
             onPressed: () {
               _inputFieldController.text = '';
             },
