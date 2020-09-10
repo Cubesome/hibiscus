@@ -11,7 +11,7 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
-  String _appVersion = '0.3.0 beta';
+  String _appVersion = '0.3.1 beta';
   bool _processingInput = false;
   bool _textAlteration = true;
   bool _kaomojiInsertion = true;
