@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:hibiscus/result_page.dart';
 import 'package:hibiscus/hibiscus_engine.dart';
+import 'package:clipboard/clipboard.dart';
 
 class StartPage extends StatefulWidget {
   @override
@@ -10,7 +11,7 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
-  String _appVersion = '0.2.3 beta';
+  String _appVersion = '0.3.0 beta';
   bool _processingInput = false;
   bool _textAlteration = true;
   bool _kaomojiInsertion = true;
@@ -18,7 +19,7 @@ class _StartPageState extends State<StartPage> {
   bool _commentsInsertion = true;
   double _kaomojiIntensity = 0.1;
   double _commentsIntensity = 0.2;
-  String _userInput;
+  TextEditingController _inputFieldController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,6 +30,30 @@ class _StartPageState extends State<StartPage> {
             fontFamily: 'PalanquinDark',
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.paste),
+            onPressed: () {
+              FlutterClipboard.paste().then((_clipboardContent) {
+                _inputFieldController.text = _clipboardContent;
+              }, onError: (e) {
+                Scaffold.of(context).hideCurrentSnackBar();
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                        'An error has occurred while trying to paste the content of your clipboard.'),
+                  ),
+                );
+              });
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.delete_sweep),
+            onPressed: () {
+              _inputFieldController.text = '';
+            },
+          ),
+        ],
       ),
       drawer: Drawer(
         elevation: 100,
@@ -308,6 +333,7 @@ class _StartPageState extends State<StartPage> {
       ),
       body: SafeArea(
         child: TextField(
+          controller: _inputFieldController,
           maxLines: null,
           expands: true,
           style: TextStyle(
@@ -319,11 +345,8 @@ class _StartPageState extends State<StartPage> {
           decoration: InputDecoration(
             border: InputBorder.none,
             contentPadding: EdgeInsets.all(10),
-            hintText: 'Text to enhance...',
+            hintText: 'Text to process...',
           ),
-          onChanged: (String _userInputHolder) {
-            _userInput = _userInputHolder;
-          },
         ),
       ),
       floatingActionButton: Builder(builder: (BuildContext context) {
@@ -334,31 +357,54 @@ class _StartPageState extends State<StartPage> {
                 )
               : Icon(Icons.arrow_forward),
           onPressed: () {
-            setState(() {
-              _processingInput = true;
-            });
-            Scaffold.of(context).removeCurrentSnackBar();
-            if (_userInput != null) {
-              if (_userInput.length > 0) {
-                hibiscusEngine(
-                  textToProcess: _userInput,
-                  kaomojiIntensity: _kaomojiIntensity,
-                  commentsIntensity: _commentsIntensity,
-                  textAlteration: _textAlteration,
-                  kaomojiInsertion: _kaomojiInsertion,
-                  kaomojiOnlyAfterSentences: _kaomojiOnlyAfterSentences,
-                  commentsInsertion: _commentsInsertion,
-                ).then((_outputText) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ResultPage(resultText: _outputText),
+            if (!_processingInput) {
+              setState(() {
+                _processingInput = true;
+              });
+              Scaffold.of(context).removeCurrentSnackBar();
+              if (_inputFieldController.text != null) {
+                if (_inputFieldController.text.length > 0) {
+                  hibiscusEngine(
+                    textToProcess: _inputFieldController.text,
+                    kaomojiIntensity: _kaomojiIntensity,
+                    commentsIntensity: _commentsIntensity,
+                    textAlteration: _textAlteration,
+                    kaomojiInsertion: _kaomojiInsertion,
+                    kaomojiOnlyAfterSentences: _kaomojiOnlyAfterSentences,
+                    commentsInsertion: _commentsInsertion,
+                  ).then((_outputText) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ResultPage(resultText: _outputText),
+                      ),
+                    );
+                    setState(() {
+                      _processingInput = false;
+                    });
+                  }, onError: (e) {
+                    Scaffold.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                            'An error has occurred while trying to process your input.'),
+                      ),
+                    );
+                    setState(() {
+                      _processingInput = false;
+                    });
+                  });
+                } else {
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          'Please enter some text to process and try again.'),
                     ),
                   );
                   setState(() {
                     _processingInput = false;
                   });
-                });
+                }
               } else {
                 Scaffold.of(context).showSnackBar(
                   SnackBar(
@@ -373,13 +419,10 @@ class _StartPageState extends State<StartPage> {
             } else {
               Scaffold.of(context).showSnackBar(
                 SnackBar(
-                  content:
-                      Text('Please enter some text to process and try again.'),
+                  content: Text(
+                      'Previously started processing is still in progress, please wait...'),
                 ),
               );
-              setState(() {
-                _processingInput = false;
-              });
             }
           },
         );
