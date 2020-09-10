@@ -31,21 +31,25 @@ class _StartPageState extends State<StartPage> {
           ),
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.paste),
-            onPressed: () {
-              FlutterClipboard.paste().then((_clipboardContent) {
-                _inputFieldController.text = _clipboardContent;
-              }, onError: (e) {
-                Scaffold.of(context).hideCurrentSnackBar();
-                Scaffold.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                        'An error has occurred while trying to paste the content of your clipboard.'),
-                  ),
-                );
-              });
-            },
+          Builder(
+            builder: (context) {
+              return IconButton(
+                icon: Icon(Icons.paste),
+                onPressed: () {
+                  FlutterClipboard.paste().then((_clipboardContent) {
+                    _inputFieldController.text = _clipboardContent;
+                  }, onError: (e) {
+                    Scaffold.of(context).hideCurrentSnackBar();
+                    Scaffold.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                            'An error has occurred while trying to paste the content of your clipboard.'),
+                      ),
+                    );
+                  });
+                },
+              );
+            }
           ),
           IconButton(
             icon: Icon(Icons.delete_sweep),
