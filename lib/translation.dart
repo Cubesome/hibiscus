@@ -2,10 +2,10 @@ import 'dart:math';
 
 class Translation {
   Map _translations = {
-    'R':'W',
-    'L':'W',
-    'r':'w',
-    'l':'w',
+    'R': 'W',
+    'L': 'W',
+    'r': 'w',
+    'l': 'w',
   };
 
   Future<String> translate(String translationText) async {
@@ -64,41 +64,55 @@ class Kaomoji {
     '╰(*´︶`*)╯',
   ];
 
-  Future<String> kaomojiAdder(String emotionText, double kaomojiIntensity, bool kaomojiOnlyAfterSentences) async {
+  Future<String> kaomojiAdder(String emotionText, double kaomojiIntensity,
+      bool kaomojiOnlyAfterSentences) async {
     Random _randomNumberGenerator = Random();
     String randomKaomoji;
     String textToReplace;
     int currentPosition = 0;
 
-    if(kaomojiOnlyAfterSentences) {
+    if (kaomojiOnlyAfterSentences) {
       textToReplace = '. ';
     } else {
       textToReplace = ' ';
     }
 
-    if(emotionText.contains(textToReplace)) {
+    if (emotionText.contains(textToReplace)) {
       //currentPosition = emotionText.indexOf(textToReplace, currentPosition);
-      while(currentPosition != -1) {
+      while (currentPosition != -1) {
         currentPosition = emotionText.indexOf(textToReplace, currentPosition);
-        if(_randomNumberGenerator.nextDouble() + kaomojiIntensity > 1) {
-          randomKaomoji = _kaomoji[_randomNumberGenerator.nextInt(_kaomoji.length)];
-          emotionText = emotionText.replaceFirst(textToReplace, textToReplace + '$randomKaomoji ', currentPosition);
+        if (_randomNumberGenerator.nextDouble() + kaomojiIntensity > 1) {
+          randomKaomoji =
+              _kaomoji[_randomNumberGenerator.nextInt(_kaomoji.length)];
+          emotionText = emotionText.replaceFirst(textToReplace,
+              textToReplace + '$randomKaomoji ', currentPosition);
           //currentPosition += randomKaomoji.length + textToReplace.length + 1;
           //currentPosition = emotionText.indexOf(textToReplace, currentPosition);
-          currentPosition = emotionText.indexOf(textToReplace, currentPosition + randomKaomoji.length + textToReplace.length + 1);
+          currentPosition = emotionText.indexOf(
+              textToReplace,
+              currentPosition +
+                  randomKaomoji.length +
+                  textToReplace.length +
+                  1);
         } else {
-          currentPosition = emotionText.indexOf(textToReplace, currentPosition + textToReplace.length);
+          currentPosition = emotionText.indexOf(
+              textToReplace, currentPosition + textToReplace.length);
         }
       }
     }
 
-    if(_randomNumberGenerator.nextDouble() + kaomojiIntensity > 1 && kaomojiOnlyAfterSentences == false && emotionText.startsWith(' ') == false) {
+    if (_randomNumberGenerator.nextDouble() + kaomojiIntensity > 1 &&
+        kaomojiOnlyAfterSentences == false &&
+        emotionText.startsWith(' ') == false) {
       randomKaomoji = _kaomoji[_randomNumberGenerator.nextInt(_kaomoji.length)];
       emotionText = '$randomKaomoji $emotionText';
     }
 
     // This code is a better implementation of the commented version above it.
-    if((_randomNumberGenerator.nextDouble() + kaomojiIntensity > 1 && emotionText.endsWith('.') == true) || (kaomojiOnlyAfterSentences == false && emotionText.endsWith(' ') == false)) {
+    if ((_randomNumberGenerator.nextDouble() + kaomojiIntensity > 1 &&
+            emotionText.endsWith('.') == true) ||
+        (kaomojiOnlyAfterSentences == false &&
+            emotionText.endsWith(' ') == false)) {
       randomKaomoji = _kaomoji[_randomNumberGenerator.nextInt(_kaomoji.length)];
       emotionText += ' $randomKaomoji';
     }

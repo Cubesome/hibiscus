@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -11,7 +12,7 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
-  String _appVersion = '0.3.1 beta';
+  String _appVersion = '0.3.2 beta';
   bool _processingInput = false;
   bool _textAlteration = true;
   bool _kaomojiInsertion = true;
@@ -31,28 +32,30 @@ class _StartPageState extends State<StartPage> {
           ),
         ),
         actions: [
-          Builder(
-            builder: (context) {
-              return IconButton(
-                icon: Icon(Icons.paste),
-                onPressed: () {
-                  FlutterClipboard.paste().then((_clipboardContent) {
-                    _inputFieldController.text = _clipboardContent;
-                  }, onError: (e) {
-                    Scaffold.of(context).hideCurrentSnackBar();
-                    Scaffold.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                            'An error has occurred while trying to paste the content of your clipboard.'),
+          Builder(builder: (context) {
+            return IconButton(
+              icon: Icon(Icons.paste_outlined),
+              tooltip: 'Paste from clipboard',
+              onPressed: () {
+                FlutterClipboard.paste().then((_clipboardContent) {
+                  _inputFieldController.text = _clipboardContent;
+                }, onError: (e) {
+                  Scaffold.of(context).hideCurrentSnackBar();
+                  Scaffold.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'The app was unable to paste the content of your clipboard. This may be caused by the lack of permission or content in your clipboard.',
                       ),
-                    );
-                  });
-                },
-              );
-            }
-          ),
+                      duration: Duration(seconds: 7),
+                    ),
+                  );
+                });
+              },
+            );
+          }),
           IconButton(
-            icon: Icon(Icons.delete_forever),
+            icon: Icon(Icons.backspace_outlined),
+            tooltip: 'Clear input',
             onPressed: () {
               _inputFieldController.text = '';
             },
@@ -332,6 +335,21 @@ class _StartPageState extends State<StartPage> {
                 launch('https://github.com/cubesome/hibiscus');
               },
             ),
+            ListTile(
+              leading: Icon(
+                Icons.bug_report,
+                color: Theme.of(context).accentColor,
+              ),
+              title: Text(
+                'Report an issue',
+                style: TextStyle(
+                  color: Theme.of(context).accentColor,
+                ),
+              ),
+              onTap: () {
+                launch('https://github.com/cubesome/hibiscus/issues');
+              },
+            ),
           ],
         ),
       ),
@@ -361,21 +379,25 @@ class _StartPageState extends State<StartPage> {
                 )
               : Icon(Icons.arrow_forward),
           onPressed: () {
+            Scaffold.of(context).removeCurrentSnackBar();
             if (!_processingInput) {
               setState(() {
                 _processingInput = true;
               });
-              Scaffold.of(context).removeCurrentSnackBar();
               if (_inputFieldController.text != null) {
                 if (_inputFieldController.text.length > 0) {
-                  hibiscusEngine(
-                    textToProcess: _inputFieldController.text,
-                    kaomojiIntensity: _kaomojiIntensity,
-                    commentsIntensity: _commentsIntensity,
-                    textAlteration: _textAlteration,
-                    kaomojiInsertion: _kaomojiInsertion,
-                    kaomojiOnlyAfterSentences: _kaomojiOnlyAfterSentences,
-                    commentsInsertion: _commentsInsertion,
+                  Map _hibiscusEngineParameters = {
+                    'textToProcess': _inputFieldController.text,
+                    'kaomojiIntensity': _kaomojiIntensity,
+                    'commentsIntensity': _commentsIntensity,
+                    'textAlteration': _textAlteration,
+                    'kaomojiInsertion': _kaomojiInsertion,
+                    'kaomojiOnlyAfterSentences': _kaomojiOnlyAfterSentences,
+                    'commentsInsertion': _commentsInsertion,
+                  };
+                  compute(
+                    hibiscusEngineAsync,
+                    _hibiscusEngineParameters,
                   ).then((_outputText) {
                     Navigator.push(
                       context,
@@ -398,6 +420,36 @@ class _StartPageState extends State<StartPage> {
                       _processingInput = false;
                     });
                   });
+                  // hibiscusEngine(
+                  //   textToProcess: _inputFieldController.text,
+                  //   kaomojiIntensity: _kaomojiIntensity,
+                  //   commentsIntensity: _commentsIntensity,
+                  //   textAlteration: _textAlteration,
+                  //   kaomojiInsertion: _kaomojiInsertion,
+                  //   kaomojiOnlyAfterSentences: _kaomojiOnlyAfterSentences,
+                  //   commentsInsertion: _commentsInsertion,
+                  // ).then((_outputText) {
+                  //   Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) =>
+                  //           ResultPage(resultText: _outputText),
+                  //     ),
+                  //   );
+                  //   setState(() {
+                  //     _processingInput = false;
+                  //   });
+                  // }, onError: (e) {
+                  //   Scaffold.of(context).showSnackBar(
+                  //     SnackBar(
+                  //       content: Text(
+                  //           'An error has occurred while trying to process your input.'),
+                  //     ),
+                  //   );
+                  //   setState(() {
+                  //     _processingInput = false;
+                  //   });
+                  // });
                 } else {
                   Scaffold.of(context).showSnackBar(
                     SnackBar(
