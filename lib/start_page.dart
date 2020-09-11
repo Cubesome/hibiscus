@@ -396,7 +396,7 @@ class _StartPageState extends State<StartPage> {
                     'commentsInsertion': _commentsInsertion,
                   };
                   compute(
-                    hibiscusEngineAsync,
+                    hibiscusEngine,
                     _hibiscusEngineParameters,
                   ).then((_outputText) {
                     Navigator.push(
@@ -420,36 +420,6 @@ class _StartPageState extends State<StartPage> {
                       _processingInput = false;
                     });
                   });
-                  // hibiscusEngine(
-                  //   textToProcess: _inputFieldController.text,
-                  //   kaomojiIntensity: _kaomojiIntensity,
-                  //   commentsIntensity: _commentsIntensity,
-                  //   textAlteration: _textAlteration,
-                  //   kaomojiInsertion: _kaomojiInsertion,
-                  //   kaomojiOnlyAfterSentences: _kaomojiOnlyAfterSentences,
-                  //   commentsInsertion: _commentsInsertion,
-                  // ).then((_outputText) {
-                  //   Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) =>
-                  //           ResultPage(resultText: _outputText),
-                  //     ),
-                  //   );
-                  //   setState(() {
-                  //     _processingInput = false;
-                  //   });
-                  // }, onError: (e) {
-                  //   Scaffold.of(context).showSnackBar(
-                  //     SnackBar(
-                  //       content: Text(
-                  //           'An error has occurred while trying to process your input.'),
-                  //     ),
-                  //   );
-                  //   setState(() {
-                  //     _processingInput = false;
-                  //   });
-                  // });
                 } else {
                   Scaffold.of(context).showSnackBar(
                     SnackBar(
