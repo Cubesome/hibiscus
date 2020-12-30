@@ -34,7 +34,7 @@ class _ResultPageState extends State<ResultPage> {
                         Scaffold.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                                'Your results has been copied to clipboard!'),
+                                'Your results were copied to clipboard!'),
                           ),
                         );
                       },

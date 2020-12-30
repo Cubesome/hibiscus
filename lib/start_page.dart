@@ -2,9 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:clipboard/clipboard.dart';
+import 'package:hibiscus/additional_licenses.dart';
 import 'package:hibiscus/result_page.dart';
 import 'package:hibiscus/hibiscus_engine.dart';
-import 'package:clipboard/clipboard.dart';
+
+String appVersion = '0.3.2 beta';
 
 class StartPage extends StatefulWidget {
   @override
@@ -12,7 +15,6 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
-  String _appVersion = '0.3.2 beta';
   bool _processingInput = false;
   bool _textAlteration = true;
   bool _kaomojiInsertion = true;
@@ -246,6 +248,7 @@ class _StartPageState extends State<StartPage> {
                 ),
               ),
               onTap: () {
+                updateAdditionalLicenses();
                 showAboutDialog(
                   context: context,
                   applicationIcon: Padding(
@@ -255,7 +258,7 @@ class _StartPageState extends State<StartPage> {
                       width: 50,
                     ),
                   ),
-                  applicationVersion: 'Version: $_appVersion',
+                  applicationVersion: 'Version: $appVersion',
                   applicationName: 'Owotion',
                   applicationLegalese: 'Developed by Cubesome',
                   children: [
@@ -266,7 +269,7 @@ class _StartPageState extends State<StartPage> {
                       text: TextSpan(children: [
                         TextSpan(
                           text:
-                              'This simple app provides you with the amazing functionality that you didn\'t even know you needed. If you want to know how it works, feel free to look under the hood by checking out our ',
+                          'This simple app provides you with the amazing functionality that you didn\'t even know you needed. If you want to know how it works, feel free to look under the hood by checking out our ',
                           style: TextStyle(
                             color: Colors.black,
                           ),
@@ -291,7 +294,7 @@ class _StartPageState extends State<StartPage> {
                     ),
                   ],
                 );
-              },
+              }
             ),
             ListTile(
               leading: Icon(
@@ -305,6 +308,7 @@ class _StartPageState extends State<StartPage> {
                 ),
               ),
               onTap: () {
+                updateAdditionalLicenses();
                 showLicensePage(
                   context: context,
                   applicationIcon: Padding(
@@ -314,7 +318,7 @@ class _StartPageState extends State<StartPage> {
                       width: 50,
                     ),
                   ),
-                  applicationVersion: 'Version: $_appVersion',
+                  applicationVersion: 'Version: $appVersion',
                   applicationName: 'Owotion',
                   applicationLegalese: 'Developed by Cubesome',
                 );
