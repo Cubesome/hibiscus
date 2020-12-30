@@ -7,7 +7,7 @@ import 'package:hibiscus/additional_licenses.dart';
 import 'package:hibiscus/result_page.dart';
 import 'package:hibiscus/hibiscus_engine.dart';
 
-String appVersion = '0.3.2 beta';
+String appVersion = '0.3.3 beta';
 
 class StartPage extends StatefulWidget {
   @override
