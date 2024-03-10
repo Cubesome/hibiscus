@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:share/share.dart';
@@ -6,7 +5,7 @@ import 'package:clipboard/clipboard.dart';
 
 class ResultPage extends StatefulWidget {
   final String resultText;
-  ResultPage({Key key, this.resultText}) : super(key: key);
+  ResultPage({required Key key, required this.resultText}) : super(key: key);
   @override
   _ResultPageState createState() => _ResultPageState();
 }
@@ -30,8 +29,8 @@ class _ResultPageState extends State<ResultPage> {
                       icon: Icon(Icons.content_copy),
                       onPressed: () {
                         FlutterClipboard.copy(widget.resultText);
-                        Scaffold.of(context).hideCurrentSnackBar();
-                        Scaffold.of(context).showSnackBar(
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                        ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
                                 'Your results were copied to clipboard!'),
@@ -57,7 +56,7 @@ class _ResultPageState extends State<ResultPage> {
         maxLines: null,
         expands: true,
         style: TextStyle(
-          color: Theme.of(context).accentColor,
+          color: Theme.of(context).colorScheme.secondary,
           fontFamily: 'Quicksand',
           fontSize: 18,
           fontWeight: FontWeight.bold,

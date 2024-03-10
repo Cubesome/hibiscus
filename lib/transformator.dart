@@ -1,4 +1,4 @@
-import 'package:hibiscus/translation.dart';
+import 'package:owotion/translation.dart';
 
 Future<String> hibiscusEngine(Map _hibiscusEngineParameters) async {
   String _processedText = _hibiscusEngineParameters['textToProcess'];

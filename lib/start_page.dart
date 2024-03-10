@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:clipboard/clipboard.dart';
-import 'package:hibiscus/additional_licenses.dart';
-import 'package:hibiscus/result_page.dart';
-import 'package:hibiscus/hibiscus_engine.dart';
+import 'package:owotion/additional_licenses.dart';
+import 'package:owotion/result_page.dart';
+import 'package:owotion/transformator.dart';
 
 String appVersion = '0.3.3 beta';
 
@@ -42,8 +42,8 @@ class _StartPageState extends State<StartPage> {
                 FlutterClipboard.paste().then((_clipboardContent) {
                   _inputFieldController.text = _clipboardContent;
                 }, onError: (e) {
-                  Scaffold.of(context).hideCurrentSnackBar();
-                  Scaffold.of(context).showSnackBar(
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
                         'The app was unable to paste the content of your clipboard. This may be caused by the lack of permission or content in your clipboard.',
@@ -99,12 +99,12 @@ class _StartPageState extends State<StartPage> {
                   ListTile(
                     leading: Icon(
                       Icons.text_fields,
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                     title: Text(
                       'Text alteration',
                       style: TextStyle(
-                        color: Theme.of(context).accentColor,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
                     trailing: Switch(
@@ -131,12 +131,12 @@ class _StartPageState extends State<StartPage> {
                   ListTile(
                     leading: Icon(
                       Icons.insert_emoticon,
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                     title: Text(
                       'Kaomoji',
                       style: TextStyle(
-                        color: Theme.of(context).accentColor,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
                     trailing: Switch(
@@ -156,7 +156,7 @@ class _StartPageState extends State<StartPage> {
                       title: Text(
                         'Insert only after sentences',
                         style: TextStyle(
-                          color: Theme.of(context).accentColor,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                       trailing: Switch(
@@ -239,12 +239,12 @@ class _StartPageState extends State<StartPage> {
             ListTile(
               leading: Icon(
                 Icons.info_outline,
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).colorScheme.secondary,
               ),
               title: Text(
                 'About',
                 style: TextStyle(
-                  color: Theme.of(context).accentColor,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
               onTap: () {
@@ -299,12 +299,12 @@ class _StartPageState extends State<StartPage> {
             ListTile(
               leading: Icon(
                 Icons.gavel,
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).colorScheme.secondary,
               ),
               title: Text(
                 'Licenses',
                 style: TextStyle(
-                  color: Theme.of(context).accentColor,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
               onTap: () {
@@ -327,12 +327,12 @@ class _StartPageState extends State<StartPage> {
             ListTile(
               leading: Icon(
                 Icons.code,
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).colorScheme.secondary,
               ),
               title: Text(
                 'Source code',
                 style: TextStyle(
-                  color: Theme.of(context).accentColor,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
               onTap: () {
@@ -342,12 +342,12 @@ class _StartPageState extends State<StartPage> {
             ListTile(
               leading: Icon(
                 Icons.bug_report,
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).colorScheme.secondary,
               ),
               title: Text(
                 'Report an issue',
                 style: TextStyle(
-                  color: Theme.of(context).accentColor,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
               onTap: () {
@@ -363,7 +363,7 @@ class _StartPageState extends State<StartPage> {
           maxLines: null,
           expands: true,
           style: TextStyle(
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).colorScheme.secondary,
             fontFamily: 'Quicksand',
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -383,60 +383,48 @@ class _StartPageState extends State<StartPage> {
                 )
               : Icon(Icons.arrow_forward),
           onPressed: () {
-            Scaffold.of(context).removeCurrentSnackBar();
+            ScaffoldMessenger.of(context).removeCurrentSnackBar();
             if (!_processingInput) {
               setState(() {
                 _processingInput = true;
               });
-              if (_inputFieldController.text != null) {
-                if (_inputFieldController.text.length > 0) {
-                  Map _hibiscusEngineParameters = {
-                    'textToProcess': _inputFieldController.text,
-                    'kaomojiIntensity': _kaomojiIntensity,
-                    'commentsIntensity': _commentsIntensity,
-                    'textAlteration': _textAlteration,
-                    'kaomojiInsertion': _kaomojiInsertion,
-                    'kaomojiOnlyAfterSentences': _kaomojiOnlyAfterSentences,
-                    'commentsInsertion': _commentsInsertion,
-                  };
-                  compute(
-                    hibiscusEngine,
-                    _hibiscusEngineParameters,
-                  ).then((_outputText) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ResultPage(resultText: _outputText),
-                      ),
-                    );
-                    setState(() {
-                      _processingInput = false;
-                    });
-                  }, onError: (e) {
-                    Scaffold.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                            'An error has occurred while trying to process your input.'),
-                      ),
-                    );
-                    setState(() {
-                      _processingInput = false;
-                    });
-                  });
-                } else {
-                  Scaffold.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                          'Please enter some text to process and try again.'),
+              if (_inputFieldController.text.length > 0) {
+                Map _hibiscusEngineParameters = {
+                  'textToProcess': _inputFieldController.text,
+                  'kaomojiIntensity': _kaomojiIntensity,
+                  'commentsIntensity': _commentsIntensity,
+                  'textAlteration': _textAlteration,
+                  'kaomojiInsertion': _kaomojiInsertion,
+                  'kaomojiOnlyAfterSentences': _kaomojiOnlyAfterSentences,
+                  'commentsInsertion': _commentsInsertion,
+                };
+                compute(
+                  hibiscusEngine,
+                  _hibiscusEngineParameters,
+                ).then((_outputText) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          ResultPage(key: ValueKey('ResultPageKey'), resultText: _outputText),
                     ),
                   );
                   setState(() {
                     _processingInput = false;
                   });
-                }
+                }, onError: (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          'An error has occurred while trying to process your input.'),
+                    ),
+                  );
+                  setState(() {
+                    _processingInput = false;
+                  });
+                });
               } else {
-                Scaffold.of(context).showSnackBar(
+                ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
                         'Please enter some text to process and try again.'),
@@ -446,8 +434,8 @@ class _StartPageState extends State<StartPage> {
                   _processingInput = false;
                 });
               }
-            } else {
-              Scaffold.of(context).showSnackBar(
+                        } else {
+              ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
                       'Previously started processing is still in progress, please wait...'),
