@@ -1,4 +1,4 @@
-package com.example.owotion
+package com.nyastral.owotion
 
 import io.flutter.embedding.android.FlutterActivity
 
