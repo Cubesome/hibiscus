@@ -189,7 +189,7 @@ class _StartPageState extends State<StartPage> {
                 ],
               ),
             ),
-            // TODO: Uncomment this part after completing comment insertion part of the Hibiscus Engine
+            // TODO: Uncomment this part after completing comment insertion part of the transformator
             // Card(
             //   color: Theme.of(context).primaryColor,
             //   child: Column(
@@ -260,7 +260,7 @@ class _StartPageState extends State<StartPage> {
                   ),
                   applicationVersion: 'Version: $appVersion',
                   applicationName: 'Owotion',
-                  applicationLegalese: 'Developed by Cubesome',
+                  applicationLegalese: 'Developed by Nyastral',
                   children: [
                     SizedBox(
                       height: 30,
@@ -269,27 +269,27 @@ class _StartPageState extends State<StartPage> {
                       text: TextSpan(children: [
                         TextSpan(
                           text:
-                          'This simple app provides you with the amazing functionality that you didn\'t even know you needed. If you want to know how it works, feel free to look under the hood by checking out our ',
+                          'This simple app provides you with the amazing functionality that you didn\'t even know you needed.',
                           style: TextStyle(
                             color: Colors.black,
                           ),
                         ),
-                        TextSpan(
-                          text: 'repository',
-                          style: TextStyle(
-                            color: Colors.blue,
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              launch('https://github.com/cubesome/hibiscus');
-                            },
-                        ),
-                        TextSpan(
-                          text: '.',
-                          style: TextStyle(
-                            color: Colors.black,
-                          ),
-                        ),
+                        // TextSpan(
+                        //   text: 'repository',
+                        //   style: TextStyle(
+                        //     color: Colors.blue,
+                        //   ),
+                        //   recognizer: TapGestureRecognizer()
+                        //     ..onTap = () {
+                        //       launch('https://github.com/...');
+                        //     },
+                        // // ),
+                        // TextSpan(
+                        //   text: '.',
+                        //   style: TextStyle(
+                        //     color: Colors.black,
+                        //   ),
+                        // ),
                       ]),
                     ),
                   ],
@@ -320,40 +320,40 @@ class _StartPageState extends State<StartPage> {
                   ),
                   applicationVersion: 'Version: $appVersion',
                   applicationName: 'Owotion',
-                  applicationLegalese: 'Developed by Cubesome',
+                  applicationLegalese: 'Developed by Nyastral',
                 );
               },
             ),
-            ListTile(
-              leading: Icon(
-                Icons.code,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-              title: Text(
-                'Source code',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              onTap: () {
-                launch('https://github.com/cubesome/hibiscus');
-              },
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.bug_report,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-              title: Text(
-                'Report an issue',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-              onTap: () {
-                launch('https://github.com/cubesome/hibiscus/issues');
-              },
-            ),
+            // ListTile(
+            //   leading: Icon(
+            //     Icons.code,
+            //     color: Theme.of(context).colorScheme.secondary,
+            //   ),
+            //   title: Text(
+            //     'Source code',
+            //     style: TextStyle(
+            //       color: Theme.of(context).colorScheme.secondary,
+            //     ),
+            //   ),
+            //   onTap: () {
+            //     launch('https://github.com/...');
+            //   },
+            // ),
+            // ListTile(
+            //   leading: Icon(
+            //     Icons.bug_report,
+            //     color: Theme.of(context).colorScheme.secondary,
+            //   ),
+            //   title: Text(
+            //     'Report an issue',
+            //     style: TextStyle(
+            //       color: Theme.of(context).colorScheme.secondary,
+            //     ),
+            //   ),
+            //   onTap: () {
+            //     launch('https://github.com/...');
+            //   },
+            // ),
           ],
         ),
       ),
@@ -389,7 +389,7 @@ class _StartPageState extends State<StartPage> {
                 _processingInput = true;
               });
               if (_inputFieldController.text.length > 0) {
-                Map _hibiscusEngineParameters = {
+                Map _transformatorParameters = {
                   'textToProcess': _inputFieldController.text,
                   'kaomojiIntensity': _kaomojiIntensity,
                   'commentsIntensity': _commentsIntensity,
@@ -399,8 +399,8 @@ class _StartPageState extends State<StartPage> {
                   'commentsInsertion': _commentsInsertion,
                 };
                 compute(
-                  hibiscusEngine,
-                  _hibiscusEngineParameters,
+                  transformator,
+                  _transformatorParameters,
                 ).then((_outputText) {
                   Navigator.push(
                     context,

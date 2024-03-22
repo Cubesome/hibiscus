@@ -1,8 +1,5 @@
 # Owotion
 
-## Mobile and web versions
-You can try Owotion instantly through your browser by visiting https://owotion.cubesome.com/, or download it as an app to use it on the go (even offline) here: https://github.com/cubesome/hibiscus/releases.
-
 ## About
 The mobile app that can change any text you want into a piece of art in mere seconds!
 
@@ -16,4 +13,4 @@ The app simply changes letters 'R' and 'L' into 'W' so that the resulting string
 - lots of fun!
 
 ## Notice
-Please keep in mind, that this project is still in beta, therefore some aspects of the app may not be working flawlessly. If you notice any issues, please submit an issue here: https://github.com/cubesome/hibiscus/issues.
+Please keep in mind, that this project is still in beta, therefore some aspects of the app may not be working flawlessly.

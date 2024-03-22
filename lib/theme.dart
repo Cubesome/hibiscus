@@ -9,14 +9,13 @@ ThemeData lightTheme = ThemeData(
     foregroundColor: Color(0xff212121),
   ),
   textTheme: TextTheme(
-    displayLarge: TextStyle(
+    headline1: TextStyle(
       color: Colors.black,
       fontSize: 50,
       fontFamily: 'Quicksand',
       fontWeight: FontWeight.normal,
     ),
-  ),
-  colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Color(0xff212121)),
+  ), colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Color(0xff212121)).copyWith(background: Color(0xffffffff)),
 );
 
 ThemeData darkTheme = ThemeData(
@@ -28,12 +27,11 @@ ThemeData darkTheme = ThemeData(
     foregroundColor: Color(0xffffffff),
   ),
   textTheme: TextTheme(
-    displayLarge: TextStyle(
+    headline1: TextStyle(
       color: Colors.white,
       fontSize: 50,
       fontFamily: 'Quicksand',
       fontWeight: FontWeight.normal,
     ),
-  ),
-  colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Color(0xffffffff)),
+  ), colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Color(0xffffffff)).copyWith(background: Color(0xff252525)),
 );

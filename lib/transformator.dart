@@ -1,19 +1,19 @@
 import 'package:owotion/translation.dart';
 
-Future<String> hibiscusEngine(Map _hibiscusEngineParameters) async {
-  String _processedText = _hibiscusEngineParameters['textToProcess'];
+Future<String> transformator(Map _transformatorParameters) async {
+  String _processedText = _transformatorParameters['textToProcess'];
 
-  if (_hibiscusEngineParameters['textAlteration']) {
+  if (_transformatorParameters['textAlteration']) {
     Translation translationHandler = Translation();
     _processedText = await translationHandler.translate(_processedText);
   }
 
-  if (_hibiscusEngineParameters['kaomojiInsertion']) {
+  if (_transformatorParameters['kaomojiInsertion']) {
     Kaomoji kaomojiHandler = Kaomoji();
     _processedText = await kaomojiHandler.kaomojiAdder(
         _processedText,
-        _hibiscusEngineParameters['kaomojiIntensity'],
-        _hibiscusEngineParameters['kaomojiOnlyAfterSentences']);
+        _transformatorParameters['kaomojiIntensity'],
+        _transformatorParameters['kaomojiOnlyAfterSentences']);
   }
 
   // TODO: Comment insertion
